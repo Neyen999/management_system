@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql_managment_system
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 'root'
+    ports:
+      - '3319:3306'
+    expose:
+      - '3306'
+    healthcheck:
+      test: ["CMD", "mysqladmin" , "--password=root","ping", "-h", "localhost"]
+      timeout: 40s
+      retries: 10
+    volumes:
+      - ./db_data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_managment_system
+    restart: always
+    ports:
+      - '8095:80'
+    environment:
+      PMA_HOST: db
