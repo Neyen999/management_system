@@ -14,21 +14,12 @@ public class ControllerErrorHandler {
     public ControllerErrorHandler() {
     }
 
-    @ExceptionHandler({HttpClientErrorException.Forbidden.class})
-    public ResponseEntity<CustomException> handleCustomBadRequestException(HttpClientErrorException.Forbidden ex) {
-        CustomException exceptionDetail = new CustomException(HttpStatus.FORBIDDEN);
-        return new ResponseEntity(exceptionDetail, HttpStatus.FORBIDDEN);
+    @ExceptionHandler({CustomException.class})
+    public ResponseEntity<CustomException> handleCustomException(CustomException ex) {
+        return this.createErrorResponse(ex);
     }
-//
-//    @ExceptionHandler({NotFoundException.class})
-//    public ResponseEntity<CustomException> handleCustomNotFoundException(NotFoundException ex) {
-//        CustomException exceptionDetail = new CustomException(ex.getErrorProvider(), HttpStatus.NOT_FOUND);
-//        return new ResponseEntity(exceptionDetail, HttpStatus.NOT_FOUND);
-//    }
-//
-//    @ExceptionHandler({ProcessingException.class})
-//    public ResponseEntity<CustomException> handleCustomProcessingException(ProcessingException ex) {
-//        CustomException exceptionDetail = new CustomException(ex.getErrorProvider(), HttpStatus.INTERNAL_SERVER_ERROR);
-//        return new ResponseEntity(exceptionDetail, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+
+    private ResponseEntity<CustomException> createErrorResponse(CustomException ex) {
+        return new ResponseEntity(ex, ex.getHttpStatus());
+    }
 }

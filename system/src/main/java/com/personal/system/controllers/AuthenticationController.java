@@ -2,6 +2,7 @@ package com.personal.system.controllers;
 
 import com.personal.system.dtos.AuthRequestDto;
 import com.personal.system.dtos.JwtResponseDto;
+import com.personal.system.dtos.RegisterRequestDto;
 import com.personal.system.dtos.SystemUserDto;
 import com.personal.system.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,12 +27,12 @@ public class AuthenticationController {
     }
 
     @PostMapping("/auth/register/superadmin")
-    public SystemUserDto registerSuperadmin(@RequestBody SystemUserDto request) {
+    public SystemUserDto registerSuperadmin(@RequestBody RegisterRequestDto request) {
         return userService.registerUser(request);
     }
 
     @PostMapping("/auth/register/user")
-    public SystemUserDto registerUser(@RequestBody SystemUserDto request) {
+    public SystemUserDto registerUser(@RequestBody RegisterRequestDto request) {
         return userService.registerUser(request);
     }
 

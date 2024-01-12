@@ -1,5 +1,7 @@
 package com.personal.system.configuration;
 
+import com.personal.system.security.CustomAccessDeniedHandler;
+import com.personal.system.security.CustomAuthenticationEntrypoint;
 import com.personal.system.security.JwtAuthFilter;
 import com.personal.system.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -37,8 +40,11 @@ public class SecurityConfig {
         return http
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/api/auth/**").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated();
+                })
+                .exceptionHandling(handling -> {
+                    handling.accessDeniedHandler(new CustomAccessDeniedHandler())
+                            .authenticationEntryPoint(new CustomAuthenticationEntrypoint());
                 })
                 .sessionManagement(sessionConfigurer -> {
                     sessionConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);

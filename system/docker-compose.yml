@@ -27,3 +27,19 @@ services:
       - '8095:80'
     environment:
       PMA_HOST: db
+#  backend_system:
+#    container_name: backend_system
+#    build:
+#      context: ./
+#      dockerfile: Dockerfile
+#      args:
+#        PROFILE: docker
+#        DB_HOST: db
+#        DB_NAME: managment_system
+#        DB_USER: root
+#        DB_password: root
+#    ports:
+#      - 8099:8080
+#    depends_on:
+#      db:
+#        condition: service_healthy

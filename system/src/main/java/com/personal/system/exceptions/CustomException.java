@@ -3,31 +3,20 @@ package com.personal.system.exceptions;
 import org.springframework.http.HttpStatus;
 
 public class CustomException extends RuntimeException {
-//    private ErrorCodeProvider errorProvider;
     private HttpStatus httpStatus;
     private int httpStatusCode;
     private int errorCode;
 
 
     public CustomException() {
-//        super(errorProvider.getErrorMessage());
-//        this.errorProvider = errorProvider;
-//        this.errorCode = errorProvider.getErrorCode();
         this.printStackTrace();
     }
 
     public CustomException(HttpStatus httpStatus) {
-//        super(errorProvider.getErrorMessage());
-//        this.errorProvider = errorProvider;
-//        this.errorCode = errorProvider.getErrorCode();
         this.httpStatus = httpStatus;
         this.httpStatusCode = httpStatus.value();
         this.printStackTrace();
     }
-
-//    public ErrorCodeProvider getErrorProvider() {
-//        return this.errorProvider;
-//    }
 
     public int getErrorCode() {
         return this.errorCode;

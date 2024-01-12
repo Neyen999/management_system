@@ -2,6 +2,7 @@ package com.personal.system.services;
 
 import com.personal.system.dtos.AuthRequestDto;
 import com.personal.system.dtos.JwtResponseDto;
+import com.personal.system.dtos.RegisterRequestDto;
 import com.personal.system.dtos.SystemUserDto;
 import com.personal.system.models.SystemUser;
 import com.personal.system.repositories.SystemUserRepository;
@@ -47,7 +48,7 @@ public class UserService {
     }
 
     @Transactional
-    public SystemUserDto registerUser(SystemUserDto registerRequestDto) {
+    public SystemUserDto registerUser(RegisterRequestDto registerRequestDto) {
         SystemUser existingUser = userRepository.findByUsername(registerRequestDto.getUsername());
         if (existingUser != null) {
             throw new RuntimeException("User exists");
@@ -74,5 +75,16 @@ public class UserService {
         }
 
         return modelMapper.map(user, SystemUserDto.class);
+    }
+
+    @Transactional
+    public SystemUserDto updateUser(SystemUserDto request) {
+        SystemUser user = userRepository.findById(request.getId()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        SystemUser updatedUser = modelMapper.map(request, SystemUser.class);
+
+        userRepository.save(updatedUser);
+
+        return modelMapper.map(updatedUser, SystemUserDto.class);
     }
 }
