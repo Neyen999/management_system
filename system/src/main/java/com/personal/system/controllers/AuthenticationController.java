@@ -7,7 +7,6 @@ import com.personal.system.dtos.SystemUserDto;
 import com.personal.system.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -30,11 +29,4 @@ public class AuthenticationController {
     public SystemUserDto registerSuperadmin(@RequestBody RegisterRequestDto request) {
         return userService.registerUser(request);
     }
-
-    @PostMapping("/auth/register/user")
-    public SystemUserDto registerUser(@RequestBody RegisterRequestDto request) {
-        return userService.registerUser(request);
-    }
-
-
 }

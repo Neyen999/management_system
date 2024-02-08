@@ -1,15 +1,15 @@
 package com.personal.system.services;
 
+//import com.asaplibs.errorHandling.exception.CustomException;
+
 import com.personal.system.dtos.AssignatureCourseDto;
-import com.personal.system.dtos.SystemUserDto;
-import com.personal.system.exceptions.CustomException;
+import com.personal.system.dtos.AssignatureCourseUserDto;
 import com.personal.system.models.AssignatureCourse;
 import com.personal.system.models.SystemUser;
 import com.personal.system.repositories.AssignatureCourseRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +35,8 @@ public class AssignatureCourseService {
 
     @Transactional
     public AssignatureCourseDto updateAssignatureCourse(Long id, AssignatureCourseDto request) {
-        AssignatureCourse assignatureCourse = assignatureCourseRepository.findById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND));
+//        AssignatureCourse assignatureCourse = assignatureCourseRepository.findById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Could not find Assignature", ""));
+        AssignatureCourse assignatureCourse = assignatureCourseRepository.findById(id).orElseThrow(() -> new RuntimeException("Could not find Assignature"));
 
         assignatureCourse.setId(assignatureCourse.getId());
         assignatureCourse.setAssignature(assignatureCourse.getAssignature());
@@ -62,7 +63,8 @@ public class AssignatureCourseService {
     }
 
     public AssignatureCourseDto getAssignatureById(Long id) {
-        AssignatureCourse assignatureCourse = assignatureCourseRepository.findById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND));
+//        AssignatureCourse assignatureCourse = assignatureCourseRepository.findById(id).orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND, "Could not find assignature." , ""));
+        AssignatureCourse assignatureCourse = assignatureCourseRepository.findById(id).orElseThrow(() -> new RuntimeException("Could not find assignature."));
 
         return modelMapper.map(assignatureCourse, AssignatureCourseDto.class);
     }
@@ -75,5 +77,13 @@ public class AssignatureCourseService {
                 .collect(Collectors.toList());
 
         return assignatureCourses;
+    }
+
+    public List<AssignatureCourseUserDto> getAssignaturesCoursesByUserId(Long userId) {
+        List<AssignatureCourse> assignatureCourses = assignatureCourseRepository.findAssignatureCoursesByUserId(userId);
+
+        Type assignatureCoursesUserDto = new TypeToken<List<AssignatureCourseUserDto>>() {}.getType();
+
+        return modelMapper.map(assignatureCourses, assignatureCoursesUserDto);
     }
 }

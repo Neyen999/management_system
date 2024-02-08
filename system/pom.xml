@@ -76,6 +76,18 @@
 			<artifactId>reactor-core</artifactId>
 			<version>3.6.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.necamon</groupId> <!-- Replace with your own group ID -->
+			<artifactId>errorHandling</artifactId> <!-- Replace with your library artifact ID -->
+			<version>0.0.1</version> <!-- Replace with your library version -->
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/errorHandling3x.jar</systemPath> <!-- Replace 'your-library.jar' with your JAR name -->
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

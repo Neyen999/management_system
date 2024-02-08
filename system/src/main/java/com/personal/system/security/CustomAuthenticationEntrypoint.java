@@ -1,22 +1,20 @@
 package com.personal.system.security;
 
 
+//import com.asaplibs.errorHandling.exception.CustomException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.personal.system.exceptions.CustomException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
+@Order(1)
 public class CustomAuthenticationEntrypoint implements AuthenticationEntryPoint {
 
     @Override
@@ -28,10 +26,12 @@ public class CustomAuthenticationEntrypoint implements AuthenticationEntryPoint 
         // Write the exception message to the response body
         ObjectMapper objectMapper = new ObjectMapper();
         // Create a custom exception object
-        CustomException customException = new CustomException(HttpStatus.UNAUTHORIZED);
-        customException.setErrorCode(401);
+//        CustomException customException = new CustomException(authException, HttpStatus.UNAUTHORIZED);
+//        customException.setErrorCode(401);
+        RuntimeException exception = new RuntimeException("Acces denied code: 401");
         // Convert the custom exception object to a JSON string
-        String json = objectMapper.writeValueAsString(customException);
+        String json = objectMapper.writeValueAsString(exception);
+//        String json = objectMapper.writeValueAsString(new Exception());
         response.getWriter().write(json);
     }
 }

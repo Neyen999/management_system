@@ -17,4 +17,5 @@ public class SystemUserDto {
     private String name;
     private String lastName;
     private List<RolesDto> roles;
+    private String documentData;
 }

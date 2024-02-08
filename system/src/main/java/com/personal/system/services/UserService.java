@@ -6,6 +6,7 @@ import com.personal.system.dtos.RegisterRequestDto;
 import com.personal.system.dtos.SystemUserDto;
 import com.personal.system.models.SystemUser;
 import com.personal.system.repositories.SystemUserRepository;
+import com.personal.system.utils.AesEncrypter;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ModelMapper modelMapper;
+//    @Autowired
+//    private AesEncrypter aesEncrypter;
 
     @Transactional
     public JwtResponseDto loginUser(AuthRequestDto authRequestDto) {
@@ -42,16 +45,19 @@ public class UserService {
         String username = authRequestDto.getUsername();
         String password = authRequestDto.getPassword();
 
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 
         return new JwtResponseDto(jwtService.GenerateToken(username));
     }
 
     @Transactional
     public SystemUserDto registerUser(RegisterRequestDto registerRequestDto) {
-        SystemUser existingUser = userRepository.findByUsername(registerRequestDto.getUsername());
-        if (existingUser != null) {
-            throw new RuntimeException("User exists");
+        if (existsByEmail(registerRequestDto.getUsername())) {
+            throw new RuntimeException("The email address is already in use");
+        }
+
+        if (existsByDocumentData(registerRequestDto.getDocumentData())) {
+            throw new RuntimeException("The document you are introducing already exists");
         }
 
         SystemUser newUser = modelMapper.map(registerRequestDto, SystemUser.class);
@@ -74,7 +80,9 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
 
-        return modelMapper.map(user, SystemUserDto.class);
+        SystemUserDto userDto = modelMapper.map(user, SystemUserDto.class);
+
+        return userDto;
     }
 
     @Transactional
@@ -86,5 +94,15 @@ public class UserService {
         userRepository.save(updatedUser);
 
         return modelMapper.map(updatedUser, SystemUserDto.class);
+    }
+
+    public boolean existsByEmail(String username) {
+        SystemUser user = userRepository.findByUsername(username);
+        return user != null;
+    }
+
+    public boolean existsByDocumentData(String documentData) {
+        SystemUser user = userRepository.findByDocumentData(documentData);
+        return user != null;
     }
 }

@@ -29,4 +29,8 @@ public class SystemUser {
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles;
+    @Column(columnDefinition = "VARBINARY(255)")
+    private String documentData;
+    @Column(columnDefinition = "BIT DEFAULT 1")
+    private boolean active;
 }

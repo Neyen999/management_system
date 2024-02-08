@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @SpringBootApplication
 @EnableWebMvc
-@ComponentScan("com.personal.system.*")
+@ComponentScan("com.personal.system.*, com.asaplibs.errorHandling.*")
 public class SystemApplication {
 
 	public static void main(String[] args) {
