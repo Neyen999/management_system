@@ -18,4 +18,5 @@ public class SystemUserDto {
     private String lastName;
     private List<RolesDto> roles;
     private String documentData;
+    private boolean active;
 }
